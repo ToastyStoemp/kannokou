@@ -15,9 +15,9 @@ comCore = {
 	[protocol.INIT]: function(socket, data){
 		socket.nickname = data.nick;
 
-		var reply = { 'c': [protocol.NEWID], 'id': socket.upgradeReq.headers['sec-websocket-key'] };
-		//wsServer.sendTo(socket, reply);
+		var reply = { 'c': protocol.NEWID, 'id': socket.upgradeReq.headers['sec-websocket-key'] };
 		wsServer.buffer(reply, socket.upgradeReq.headers['sec-websocket-key']);
+
 		console.log('New client joined');
 	},
 
@@ -26,7 +26,7 @@ comCore = {
 		var reply = channels.getChannelMeta(data.chan);
 		reply.c = protocol.CHANMETA;
 		wsServer.buffer(reply, socket.upgradeReq.headers['sec-websocket-key']);
-		//wsServer.sendTo(socket, reply);
+
 		console.log('Client requested channel meta data');
 	},
 
@@ -42,7 +42,8 @@ comCore = {
 
 	// user joins new channel //
 	[protocol.JOIN]: function(socket, data){
-		if(typeof socket.channel !== 'undefined') console.log('socket.channel ' + socket.channel);
+		if(typeof data.chan === 'undefined') return;
+
 		socket.channel = data.chan;
 
 		// add new user & tell other users about new user //
@@ -57,7 +58,8 @@ comCore = {
 		// inform new user of successfull login & their nickname //
 		wsServer.buffer({
 			c: protocol.JOIN,
-			nick: socket.nickname
+			nick: socket.nickname,
+			chan: data.chan
 		}, socket.upgradeReq.headers['sec-websocket-key']);
 
 		console.log('Client "' + socket.nickname + '" joined channel: ' + data.chan);
@@ -103,7 +105,5 @@ comCore = {
 		console.log('got ping');
 	},
 
-	temp: function(){
-
-	}
+	temp: function(){	}
 }

@@ -11,6 +11,7 @@ protocol = {
   CHANMETA: 'chmt',
   CHANENV: 'chen',
   JOIN: 'j',
+  LEAVE: 'l',
   NEWUSER: 'n',
   USERLEFT: 'd',
 

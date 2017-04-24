@@ -1,30 +1,53 @@
 /*
   Developer: Toastystoemp, Marzavec
-  Description:
+  Description: core singleton, binds the uiEngine to websocket events or data
 */
 
-// import protocol from './protocol'
+'use strict'
+
+import StorageEngine from './storageEngine'
+const storageEngine = Object.freeze(new StorageEngine())
+
+import UiEngine from './uiEngine'
+
+// import Protocol from './protocol'
+// const protocol = Object.freeze(new Protocol())
+
+import WsConfig from '../configs/websocket'
+const wsConfig = Object.freeze(new WsConfig())
+
+import Websocket from './websocket'
 
 var core = {
   init: function () {
+    this.currentChannels = storageEngine.getObj('chanList')
+    if (!this.currentChannels) this.currentChannels = ['lobby']
+
+    this.uiEngine = new UiEngine()
+
+    this.websocket = new Websocket(wsConfig)
+
     this.bindEvents()
   },
 
   bindEvents: function () {
-    document.addEventListener('wsConnect', this.onWsConnect)
-    document.addEventListener('wsClose', this.onWsClose)
+    document.addEventListener('wsConnect', this.onWsConnectFn = function (e) { this.onWsConnect(e) }.bind(this))
+    document.addEventListener('wsClose', this.onWsCloseFn = function (e) { this.onWsClose(e) }.bind(this))
   },
 
   unbindEvents: function () {
-    document.removeEventListener('wsConnect', this.onWsConnect)
-    document.removeEventListener('wsClose', this.onWsClose)
+    document.removeEventListener('wsConnect', this.onWsConnectFn)
+    document.removeEventListener('wsClose', this.onWsCloseFn)
   },
 
-  onWsConnect: function () {
+  onWsConnect: function (evt) {
+    if (evt.eventData.first) {
+      this.websocket.joinChannel('lobby')
+    }
     console.log('main ws connected')
   },
 
-  onWsClose: function () {
+  onWsClose: function (evt) {
     console.log('main ws CLOSED')
   },
 

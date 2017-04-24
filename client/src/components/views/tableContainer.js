@@ -3,22 +3,28 @@
   Description:
 */
 
-import baseContainer from './baseContainer'
+'use strict'
 
-var tableContainer = {
-  init: function () {
+import BaseContainer from './baseContainer'
+
+class TableContainer extends BaseContainer {
+  constructor () {
+    super()
+
     this.bindEvents()
-  },
+  }
 
-  bindEvents: function () {
+  init () {
 
-  },
+  }
 
-  unbindEvents: function () {
+  bindEvents () {
 
-  },
+  }
 
-  temp: function () { }
+  unbindEvents () {
+
+  }
 }
 
-export default tableContainer
+export default TableContainer

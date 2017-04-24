@@ -59,7 +59,7 @@ wsServer = {
 			socket.close();
 			return;
 		}
-
+		console.log(cmdData);
 		if(typeof comCore[cmdData.c] == 'function') comCore[cmdData.c](socket, cmdData);
 		if(typeof comCore[cmdData.e] == 'function') comCore[cmdData.e](socket, cmdData);
 	},

@@ -3,22 +3,18 @@
   Description:
 */
 
-var wsConfig = {
-  init: function (curDomain) {
+class WsConfig {
+  constructor () {
     this.port = 7676
 
-    this.wsPath = this.pathByDomain(curDomain)
-  },
+    this.wsPath = this.pathByDomain(window.location.hostname)
+  }
 
-  pathByDomain: function (domain) {
+  pathByDomain (domain) {
     // return 'wss://' + domain + ':' + this.port
 
     return 'ws://' + domain + ':' + this.port
-  },
-
-  temp: function () {
-    console.log(this.test)
   }
 }
 
-export default wsConfig
+export default WsConfig

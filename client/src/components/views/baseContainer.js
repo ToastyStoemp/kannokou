@@ -3,21 +3,20 @@
   Description:
 */
 
-var baseContainer = {
-  init: function () {
+'use strict'
+
+class BaseContainer {
+  constructor () {
     this.bindEvents()
+  }
 
-  },
+  bindEvents () {
 
-  bindEvents: function () {
+  }
 
-  },
+  unbindEvents () {
 
-  unbindEvents: function () {
-
-  },
-
-  temp: function () { }
+  }
 }
 
-export default baseContainer
+export default BaseContainer

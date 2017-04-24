@@ -3,21 +3,31 @@
   Description:
 */
 
-var uiEngine = {
-  init: function () {
+'use strict'
+
+// import Protocol from './protocol'
+// const protocol = Object.freeze(new Protocol())
+
+import TableContainer from '../views/tableContainer'
+// main class
+class UiEngine {
+  constructor () {
     this.bindEvents()
+  }
 
-  },
+  bindEvents () {
+  // document.addEventListener(protocol., this.onWsConnect)
+  }
 
-  bindEvents: function () {
+  unbindEvents () {
 
-  },
+  }
 
-  unbindEvents: function () {
+  getTable () {
+    var rTable = new TableContainer()
 
-  },
-
-  temp: function () { }
+    return rTable
+  }
 }
 
-export default uiEngine
+export default UiEngine

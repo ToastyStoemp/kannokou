@@ -1,25 +1,28 @@
 /*
-  Developer: Toastystoemp, Marzavec
-  Description:
+  Developer = Toastystoemp Marzavec
+  Description =
 */
 
-var protocol = {
-  PING: 'p',
+class Protocol {
+  constructor () {
+    this.PING = 'p'
 
-  INIT: 'i',
-  NEWID: 'cnid',
-  CHANMETA: 'chmt',
-  CHANENV: 'chen',
-  JOIN: 'j',
-  NEWUSER: 'n',
-  USERLEFT: 'd',
+    this.INIT = 'i'
+    this.NEWID = 'cnid'
+    this.CHANMETA = 'chmt'
+    this.CHANENV = 'chen'
+    this.JOIN = 'j'
+    this.LEAVE = 'l'
+    this.NEWUSER = 'n'
+    this.USERLEFT = 'd'
 
-  USERUPDATE: 'u',
+    this.USERUPDATE = 'u'
 
-  EVENTTYPE: 'et',
-  EVENTDATA: 'ed',
+    this.EVENTTYPE = 'et'
+    this.EVENTDATA = 'ed'
 
-  temp: null
+    this.temp = null
+  }
 }
 
-export default protocol
+export default Protocol
