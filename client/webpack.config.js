@@ -1,6 +1,8 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const jQuery = require('jQuery');
+
 const path = require('path');
-// const webpack = require('webpack')
+
 const merge = require('webpack-merge');
 
 const Parts = require('./webpack.parts');
@@ -13,6 +15,7 @@ const Common = merge([
   {
     context: PATHS.src,
     entry: {
+      materialize: 'materialize-loader!../materialize.config.js',
       main: './index.js'
     },
     output: {
@@ -31,6 +34,11 @@ const Common = merge([
         }
       ]
     },
+    resolve: {
+      alias: {
+        jquery: "jquery/src/jquery"
+      }
+    },
     plugins: [
       new HtmlWebpackPlugin({ template: path.join(PATHS.src, 'index.html') })
     ]
@@ -42,7 +50,8 @@ module.exports = function (env) {
     return merge([
       Common,
       Parts.lintJS({ paths: PATHS.src }),
-      Parts.CSS(env)
+      Parts.CSS(env),
+      Parts.matLoader(env)
     ])
   }
 
@@ -58,6 +67,7 @@ module.exports = function (env) {
         emitWarning: true
       }
     }),
+    Parts.matLoader(env),
     Parts.CSS(env)
   ])
 }
