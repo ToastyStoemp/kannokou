@@ -19,30 +19,18 @@ class BaseContainer {
 
   buildChildren (parent, target) {
     Object.keys(target).forEach(function (struct) {
-      switch (struct) {
-        case '_class' : {
-          parent.setAttribute('class', target._class)
-          break
+      if (struct[0] === '_') {
+        var attr = struct.substring(1)
+        if (attr === 'content') {
+          parent.innerHTML = target[struct]
+        } else {
+          parent.setAttribute(attr, target[struct])
         }
-        case '_content' : {
-          parent.innerHTML = target._content
-          break
-        }
-        case '_type' : {
-          // var latestElem = parent.appendChild(this.makeElement(target[struct]))
-          console.log(target[struct])
-          break
-        }
-        default : {
-          var structName = struct.indexOf('_') === -1 ? struct : struct.substring(0, struct.indexOf('_'))
-          var latestElem = parent.appendChild(this.makeElement(structName))
-          this.buildChildren(latestElem, target[struct])
-          break
-        }
+      } else {
+        var structName = struct.indexOf('_') === -1 ? struct : struct.substring(0, struct.indexOf('_'))
+        var latestElem = parent.appendChild(this.makeElement(structName))
+        this.buildChildren(latestElem, target[struct])
       }
-
-      console.log(struct)
-      console.log(parent)
     }.bind(this))
   }
 
@@ -54,10 +42,41 @@ class BaseContainer {
     return newElement
   }
 
-  setAttributes (dom, attribs) {
+  setAttributes (attribs) {
     for (var key in attribs) {
-      dom.setAttribute(key, attribs[key])
+      this.dom.setAttribute(key, attribs[key])
     }
+  }
+
+  appendAttributes (attribs) {
+    var origAttrib = null
+    for (var key in attribs) {
+      origAttrib = this.dom.getAttribute(key)
+      if (origAttrib === null) {
+        this.dom.setAttribute(key, attribs[key])
+      } else {
+        this.dom.setAttribute(key, origAttrib + ' ' + attribs[key])
+      }
+    }
+  }
+
+  removeAttributes (attribs) {
+    var newAttrib = null
+    for (var key in attribs) {
+      newAttrib = this.dom.getAttribute(key).replace(new RegExp(attribs[key], 'g'), '')
+      if (newAttrib !== null) {
+        this.dom.setAttribute(key, newAttrib)
+      }
+    }
+  }
+
+  show () {
+    this.appendAttributes({ class: 'scale-in' })
+    this.removeAttributes({ class: 'hide' })
+  }
+
+  hide () {
+    this.appendAttributes({ class: 'scale-out' })
   }
 }
 

@@ -44,6 +44,8 @@ var core = {
     if (evt.eventData.first) {
       this.websocket.joinChannel('lobby')
     }
+
+    this.uiEngine.showLogin()
     console.log('main ws connected')
   },
 

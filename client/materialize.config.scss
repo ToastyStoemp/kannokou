@@ -1,6 +1,16 @@
-$primary-color: color("blue-grey", "lighten-2");
+body{
+  background-color: #1D1D1D;
+}
+
+$primary-color: color("orange", "darken-4");
 $primary-color-light: lighten($primary-color, 15%);
 $primary-color-dark: darken($primary-color, 15%);
+
+$secondary-color: color("orange", "darken-4") !default;
+$success-color: color("green", "base") !default;
+$error-color: color("red", "base") !default;
+
+$link-color: color("orange", "darken-3") !default;
 
 @font-face {
   font-family: 'Material Icons';

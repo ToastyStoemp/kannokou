@@ -14,10 +14,6 @@ class TableContainer extends BaseContainer {
     this.bindEvents()
   }
 
-  init () {
-
-  }
-
   bindEvents () {
 
   }
