@@ -63,8 +63,8 @@ class UiEngine {
     this.mainNav.show()
     this.mainNav.changeUsername(evt.eventData.nick)
 
-    this.leftNav.show()
     this.coreContainer.show()
+    this.leftNav.show()
     this.mainMenuBtn.show()
   }
 

@@ -9,6 +9,39 @@ class BaseContainer {
   constructor () {
     this.dom = document.createElement('div')
     this.structure = null
+
+    this.preloaderStruct = {
+      _class: 'preloader-wrapper big active',
+      _style: 'margin: 0 auto;',
+
+      div: {
+        _class: 'spinner-layer spinner-red-only',
+
+        div_1: {
+          _class: 'circle-clipper left',
+
+          div: {
+            _class: 'circle'
+          }
+        },
+
+        div_2: {
+          _class: 'gap-patch',
+
+          div: {
+            _class: 'circle'
+          }
+        },
+
+        div_3: {
+          _class: 'circle-clipper right',
+
+          div: {
+            _class: 'circle'
+          }
+        }
+      }
+    }
   }
 
   build () {
@@ -23,6 +56,8 @@ class BaseContainer {
         var attr = struct.substring(1)
         if (attr === 'content') {
           parent.innerHTML = target[struct]
+        } else if (attr === 'child' && target[struct] !== null) {
+          parent.appendChild(target[struct])
         } else {
           parent.setAttribute(attr, target[struct])
         }
@@ -32,6 +67,14 @@ class BaseContainer {
         this.buildChildren(latestElem, target[struct])
       }
     }.bind(this))
+  }
+
+  getDomByStruct (structure) {
+    var returnDom = document.createElement('div')
+
+    this.buildChildren(returnDom, structure)
+
+    return returnDom
   }
 
   makeElement (type, elemClass, contents) {
@@ -76,7 +119,11 @@ class BaseContainer {
   }
 
   hide () {
-    this.appendAttributes({ class: 'scale-out' })
+    this.appendAttributes({ class: 'scale-out hide' }) // to-do: add timeout to allow transition
+  }
+
+  getPreloader () {
+    return this.getDomByStruct(this.preloaderStruct)
   }
 }
 

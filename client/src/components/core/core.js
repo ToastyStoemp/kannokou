@@ -86,6 +86,7 @@ var core = {
   startApp: function (appData) {
     console.log(appData)
     var appID = this.uiEngine.addNewAppSpace(appData.appname)
+    // this.websocket.
     console.log(appID)
   },
 

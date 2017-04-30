@@ -87,7 +87,7 @@ class MainNav extends BaseContainer {
 
                   img: {
                     _class: 'circle',
-                    _style: 'max-width: 100px; border: solid 5px #E65100; margin-bottom: -60%;',
+                    _style: 'max-width: 72px; border: solid 5px #E65100; margin-bottom: -60%; margin-top: 4px;',
                     _src: 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460'
                   }
                 }

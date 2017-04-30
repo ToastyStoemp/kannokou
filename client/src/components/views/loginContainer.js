@@ -13,7 +13,7 @@ class LoginContainer extends BaseContainer {
 
     this.structure = {
       _class: 'row scale-transition',
-      _style: 'width: 20vw;',
+      _style: 'width: 20vw; min-width: 325px;',  // to-do: fix this
 
       div: {
         _class: 'col s12 z-depth-4 card-panel',

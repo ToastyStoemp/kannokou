@@ -39,7 +39,7 @@ comCore = {
 	// check for previous session info, otherwise send server list app //
 	[protocol.LASTSESSION]: function(socket, data){
 		// to-do: transmit last session (last active channels / apps) from db to client for restore
-		var reply = { 'c': protocol.LASTSESSION, 'sess': [{ appname: 'Channel List' }] };
+		var reply = { 'c': protocol.LASTSESSION, 'sess': [{ appname: 'Channel-List' }] };
 		wsServer.buffer(reply, socket.upgradeReq.headers['sec-websocket-key']);
 	},
 
