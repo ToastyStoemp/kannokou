@@ -11,8 +11,11 @@ class MainNav extends BaseContainer {
   constructor () {
     super()
 
+    this.usernameID = 'navUsername'
+
     this.structure = {
       _class: 'row scale-transition scale-transition hide scale-out',
+      _style: 'margin-bottom: 0px;',
 
       nav: {
         _class: 'grey darken-3',
@@ -24,7 +27,7 @@ class MainNav extends BaseContainer {
             _href: '#',
             _id: '',
             _class: 'brand-logo orange darken-4',
-            _style: 'padding-left: 7px; padding-right: 14px;',
+            _style: 'padding-left: 7px; padding-right: 14px; min-width: 316px;',
 
             i: {
               _class: 'material-icons',
@@ -70,7 +73,7 @@ class MainNav extends BaseContainer {
                 span: {
                   _class: 'white-text name',
                   _content: 'Marzavec',
-                  _id: 'navUsername'
+                  _id: this.usernameID
                 }
               }
             },
@@ -84,7 +87,7 @@ class MainNav extends BaseContainer {
 
                   img: {
                     _class: 'circle',
-                    _style: 'max-width: 100px; border: solid 5px #E65100;',
+                    _style: 'max-width: 100px; border: solid 5px #E65100; margin-bottom: -60%;',
                     _src: 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460'
                   }
                 }
@@ -104,6 +107,11 @@ class MainNav extends BaseContainer {
 
   unbindEvents () {
 
+  }
+
+  changeUsername (newNick) {
+    // regex check likely needed here //
+    document.getElementById(this.usernameID).innerHTML = newNick
   }
 }
 

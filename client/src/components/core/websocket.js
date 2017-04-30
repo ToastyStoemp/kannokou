@@ -35,8 +35,7 @@ class Websocket {
       this.rejoinInterval = null
     }
 
-    // to-do: update to use local storage engine //
-    this.send({ c: protocol.INIT, nick: 'testUser', pass: 'test' })
+    this.emitEvent('wsConnect', { first: this.firstConnection })
 
     this.heartBeat = setInterval(function () {
       this.sendPing()
@@ -68,13 +67,24 @@ class Websocket {
   bindProtocol () {
     // recived new connection id //
     this[protocol.NEWID] = function (data) {
-      this.emitEvent(protocol.CHANENV, data)
+      if (data.id === false) {
+        this.emitEvent('wsAuth', { failed: true })
+        return
+      }
 
       this.myConnectionID = data.id
 
-      this.emitEvent('wsConnect', { first: this.firstConnection })
+      var evtData = {}
+      evtData.nick = data.nick
+      evtData.first = this.firstConnection
+
+      this.emitEvent('wsAuth', evtData)
 
       if (this.firstConnection) this.firstConnection = false
+    }
+
+    this[protocol.LASTSESSION] = function (data) {
+      this.emitEvent('restoreSession', data)
     }
 
     this[protocol.JOIN] = function (data) {
@@ -94,6 +104,14 @@ class Websocket {
     if (this.socket && this.socket.readyState === this.socket.OPEN) {
       this.socket.send(JSON.stringify(data))
     }
+  }
+
+  tryAuth (username, password) {
+    this.send({ c: protocol.INIT, nick: username, pass: password })
+  }
+
+  restoreLastSession () {
+    this.send({ c: protocol.LASTSESSION })
   }
 
   emitEvent (eType, eData) {

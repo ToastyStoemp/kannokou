@@ -15,7 +15,10 @@ db = {
       });
 	},
 
-
+	tryLogin: function(socket, user, pass, callback){
+		callback(socket, user); // to-do //
+		// callback(socket, null); // fail test case //
+	},
 
 	temp: function(){
 

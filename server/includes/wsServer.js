@@ -59,7 +59,9 @@ wsServer = {
 			socket.close();
 			return;
 		}
-		console.log(cmdData);
+
+		if((typeof socket.isAuthed === 'undefined' || socket.isAuthed === false) && cmdData.c !== protocol.INIT) return;
+
 		if(typeof comCore[cmdData.c] == 'function') comCore[cmdData.c](socket, cmdData);
 		if(typeof comCore[cmdData.e] == 'function') comCore[cmdData.e](socket, cmdData);
 	},

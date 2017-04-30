@@ -13,12 +13,41 @@ comCore = {
 
 	// initial sign in //
 	[protocol.INIT]: function(socket, data){
-		socket.nickname = data.nick;
+		db.tryLogin(socket, data.nick, data.pass, function(socket, newNick){
+			comCore.authReply(socket, newNick);
+		});
+	},
 
-		var reply = { 'c': protocol.NEWID, 'id': socket.upgradeReq.headers['sec-websocket-key'] };
+	authReply: function(socket, newNick){
+		socket.isAuthed = !(newNick === null);
+
+		if(socket.isAuthed === false){
+			var reply = { 'c': protocol.NEWID, 'id': false };
+			wsServer.buffer(reply, socket.upgradeReq.headers['sec-websocket-key']);
+
+			return;
+		}
+
+		socket.nickname = newNick;
+
+		var reply = { 'c': protocol.NEWID, 'id': socket.upgradeReq.headers['sec-websocket-key'], nick: newNick };
 		wsServer.buffer(reply, socket.upgradeReq.headers['sec-websocket-key']);
 
 		console.log('New client joined');
+	},
+
+	// check for previous session info, otherwise send server list app //
+	[protocol.LASTSESSION]: function(socket, data){
+		// to-do: transmit last session (last active channels / apps) from db to client for restore
+		var reply = { 'c': protocol.LASTSESSION, 'sess': [{ appname: 'Channel List' }] };
+		wsServer.buffer(reply, socket.upgradeReq.headers['sec-websocket-key']);
+	},
+
+	// check for previous session info, otherwise send server list app //
+	[protocol.APPLICATION]: function(socket, data){
+		// to-do: transmit last session (last active channels / apps) from db to client for restore
+		var reply = { 'c': protocol.LASTSESSION, 'sess': [{ appname: 'Channel-List' }] };
+		wsServer.buffer(reply, socket.upgradeReq.headers['sec-websocket-key']);
 	},
 
 	// channel meta requested //

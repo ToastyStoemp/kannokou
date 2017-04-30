@@ -115,7 +115,7 @@ class LoginContainer extends BaseContainer {
                   _href: '#',
                   _class: 'btn waves-effect waves-light col s12',
                   _content: 'Login',
-                  _onclick: 'var fwEvent = new Event("doLogin");fwEvent.eventData = "{}";document.dispatchEvent(fwEvent)'
+                  _onclick: 'var fwEvent = new Event("doLogin");fwEvent.eventData = { loginUsername:document.getElementById("loginUsername").value, loginPassword:document.getElementById("loginPassword").value, remember:document.getElementById("loginRememberMe").checked };document.dispatchEvent(fwEvent)'
                 }
               }
             },
