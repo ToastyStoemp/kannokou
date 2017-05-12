@@ -49,9 +49,11 @@ class Websocket {
   closed () {
     this.emitEvent('wsClose', {})
 
-    this.rejoinInterval = setInterval(function () {
-      this.constructor()
-    }.bind(this), 10 * 1000)
+    if (this.rejoinInterval === null) {
+      this.rejoinInterval = setInterval(function () {
+        this.constructor()
+      }.bind(this), 10 * 1000)
+    }
   }
 
   hasData (data) {
@@ -61,7 +63,7 @@ class Websocket {
     if (typeof this[data.c] === 'function') this[data.c](data)
 
     // parse events //
-    if (typeof data.e !== 'undefined') this.emitEvent(data[protocol.EVENTTYPE], data)
+    if (typeof data.e !== 'undefined') this.emitEvent('wsEvent', data)
   }
 
   bindProtocol () {
@@ -88,7 +90,7 @@ class Websocket {
     }
 
     this[protocol.JOIN] = function (data) {
-      console.log('joined channel: ' + data.chan + ', nicknamed: ' + data.nick)
+      // console.log('joined channel: ' + data.chan + ', nicknamed: ' + data.nick)
     }
   }
 
@@ -110,8 +112,33 @@ class Websocket {
     this.send({ c: protocol.INIT, nick: username, pass: password })
   }
 
+  requestApp (appData, id) {
+    var request = {
+      c: protocol.APPLICATION,
+      name: appData.appName,
+      appEID: id,
+      appData: { act: 'i' }
+    }
+    if (typeof appData.args !== 'undefined') request.appData = appData.args
+    // console.log(appData)
+    // console.log(request)
+    this.send(request)
+  }
+
   restoreLastSession () {
     this.send({ c: protocol.LASTSESSION })
+  }
+
+  routeAppData (appData) {
+    var request = {
+      c: protocol.APPLICATION,
+      name: appData.appName,
+      appEID: appData.id,
+      appData: { act: 'null' }
+    }
+    if (typeof appData.args !== 'undefined') request.appData = appData.args
+
+    this.send(request)
   }
 
   emitEvent (eType, eData) {

@@ -5,7 +5,7 @@
 
 'use strict'
 
-import BaseContainer from './baseContainer'
+import BaseContainer from '../base/baseContainer'
 
 class LoginContainer extends BaseContainer {
   constructor () {
@@ -52,7 +52,9 @@ class LoginContainer extends BaseContainer {
 
                 input: {
                   _id: 'loginUsername',
-                  _type: 'text'
+                  _type: 'text',
+                  // to-do: fix this onclick convention
+                  _onkeyup: 'if(event.keyCode != 13)return;var fwEvent = new Event("doLogin");fwEvent.eventData = { loginUsername:document.getElementById("loginUsername").value, loginPassword:document.getElementById("loginPassword").value, remember:document.getElementById("loginRememberMe").checked };document.dispatchEvent(fwEvent)'
                 },
 
                 label: {
@@ -76,7 +78,9 @@ class LoginContainer extends BaseContainer {
 
                 input: {
                   _id: 'loginPassword',
-                  _type: 'password'
+                  _type: 'password',
+                  // to-do: fix this onclick convention
+                  _onkeyup: 'if(event.keyCode != 13)return;var fwEvent = new Event("doLogin");fwEvent.eventData = { loginUsername:document.getElementById("loginUsername").value, loginPassword:document.getElementById("loginPassword").value, remember:document.getElementById("loginRememberMe").checked };document.dispatchEvent(fwEvent)'
                 },
 
                 label: {
@@ -115,6 +119,7 @@ class LoginContainer extends BaseContainer {
                   _href: '#',
                   _class: 'btn waves-effect waves-light col s12',
                   _content: 'Login',
+                  // to-do: fix this onclick convention
                   _onclick: 'var fwEvent = new Event("doLogin");fwEvent.eventData = { loginUsername:document.getElementById("loginUsername").value, loginPassword:document.getElementById("loginPassword").value, remember:document.getElementById("loginRememberMe").checked };document.dispatchEvent(fwEvent)'
                 }
               }

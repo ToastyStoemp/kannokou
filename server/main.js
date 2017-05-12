@@ -10,18 +10,18 @@ webSocket = require('ws');
 
 // main import function //
 // blocking function used to make sure everything is imported before init()s //
-var importDirectory = function(targetDir){
+var importDirectory = function (targetDir) {
   var fileList = fileSys.readdirSync(targetDir);
-  fileList.forEach(function(targetFile){
-    if(targetFile.substr(-3) == '.js'){
+  fileList.forEach(function (targetFile) {
+    if (targetFile.substr(-3) == '.js') {
       targetFile = targetDir + targetFile;
-      if(!fileSys.lstatSync(targetFile).isDirectory()) require(targetFile);
+      if (!fileSys.lstatSync(targetFile).isDirectory()) require(targetFile);
     }
   });
 }
 
 // create log folder //
-if(!fileSys.existsSync('./logs')){
+if (!fileSys.existsSync('./logs')) {
   fileSys.mkdirSync('./logs');
 }
 

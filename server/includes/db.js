@@ -6,7 +6,7 @@
 db = {
 	conn: null,
 
-	init: function(){
+	init: function () {
 		this.conn = mysql.createConnection({
         host     : mainConfig.dbHost,
         user     : mainConfig.dbUser,
@@ -15,12 +15,12 @@ db = {
       });
 	},
 
-	tryLogin: function(socket, user, pass, callback){
+	tryLogin: function (socket, user, pass, callback) {
 		callback(socket, user); // to-do //
 		// callback(socket, null); // fail test case //
 	},
 
-	temp: function(){
+	temp: function () {
 
 	}
 }

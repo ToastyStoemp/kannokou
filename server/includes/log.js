@@ -4,7 +4,7 @@
 */
 
 log = {
-	add: function(type, details){
+	add: function (type, details) {
 		var details = this.genHeader(type) + details;
 
 		var fileStream = fileSys.createWriteStream(this.getFilePath(type), {'flags': 'a'});
@@ -12,7 +12,7 @@ log = {
 		fileStream.end("\r\n");
 	},
 
-	genHeader: function(type){
+	genHeader: function (type) {
 		var today = new Date();
 
 		var hour = today.getHours();
@@ -35,7 +35,7 @@ log = {
 		return year + '/' + month + '/' + day + ' ' + hour + ':' + min + ':' + sec + ' - ' + type + ' Event, details: ';
 	},
 
-	getFilePath: function(type){
+	getFilePath: function (type) {
 		var today = new Date();
 
 		var year = today.getFullYear();

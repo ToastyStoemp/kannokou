@@ -12,7 +12,7 @@ exports.devServer = function (options) {
   }
 }
 
-exports.matLoader = function(env){
+exports.matLoader = function (env) {
     return {
       module: {
         /* entry: {

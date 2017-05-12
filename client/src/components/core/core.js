@@ -39,6 +39,9 @@ var core = {
     document.addEventListener('wsAuth', this.onWsAuthedFn = function (e) { this.onWsAuthed(e) }.bind(this))
 
     document.addEventListener('restoreSession', this.onSessionInfoFn = function (e) { this.onSessionInfo(e) }.bind(this))
+    document.addEventListener('remoteStartApp', this.onRemoteStartFn = function (e) { this.onRemoteStart(e) }.bind(this))
+
+    document.addEventListener('routeAppData', this.routeAppDataFn = function (e) { this.routeAppData(e) }.bind(this))
   },
 
   unbindEvents: function () {
@@ -47,15 +50,20 @@ var core = {
 
     document.removeEventListener('doLogin', this.startLoginFn)
     document.removeEventListener('wsAuth', this.onWsAuthedFn)
+
+    document.removeEventListener('restoreSession', this.onSessionInfoFn)
+    document.removeEventListener('remoteStartApp', this.onRemoteStartFn)
+
+    document.removeEventListener('routeAppData', this.routeAppDataFn)
   },
 
   onWsConnect: function (evt) {
+    global.Materialize.toast('Connected!', 4000, 'orange darken-4')
     this.uiEngine.showLogin()
-    console.log('main ws connected')
   },
 
   onWsClose: function (evt) {
-    console.log('main ws CLOSED')
+    global.Materialize.toast('Lost Server Connection', 4000, 'orange darken-4')
   },
 
   startLogin: function (evt) {
@@ -72,22 +80,25 @@ var core = {
   },
 
   onSessionInfo: function (evt) {
-    console.log('got previous session data')
-
     evt.eventData.sess.forEach(function (appData) {
       this.startApp(appData)
     }.bind(this))
-
-    global.setTimeout(function () {
-      this.uiEngine.addNewAppSpace('Chat-Japanese', false)
-    }.bind(this), 1000)
   },
 
-  startApp: function (appData) {
-    console.log(appData)
-    var appID = this.uiEngine.addNewAppSpace(appData.appname)
-    // this.websocket.
-    console.log(appID)
+  onRemoteStart: function (evt) {
+    this.startApp(evt.eventData, true, true)
+  },
+
+  startApp: function (appData, useLoader, switchTo) {
+    if (typeof useLoader === 'undefined') useLoader = true
+    if (typeof switchTo === 'undefined') switchTo = false
+
+    var appID = this.uiEngine.addNewAppSpace(appData.appName, useLoader, switchTo)
+    this.websocket.requestApp(appData, appID)
+  },
+
+  routeAppData: function (evt) {
+    this.websocket.routeAppData(evt.eventData)
   },
 
   emitEvent: function (eType, eData) {

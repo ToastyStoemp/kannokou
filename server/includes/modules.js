@@ -4,6 +4,7 @@
 */
 
 modules = {
+	application: [],
 	protocol: [],
 	io:[]
 }

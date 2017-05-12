@@ -5,7 +5,7 @@
 
 'use strict'
 
-import BaseContainer from './baseContainer'
+import BaseContainer from '../base/baseContainer'
 
 class MainNav extends BaseContainer {
   constructor () {
