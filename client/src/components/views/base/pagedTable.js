@@ -27,7 +27,6 @@ class PagedTable extends BaseContainer {
     }
 
     initialData.forEach(function (info) {
-      // console.log(info)
       this.addRow(info.icon, info.title, info.data)
     }.bind(this))
   }
@@ -74,8 +73,7 @@ class PagedTable extends BaseContainer {
   }
 
   handle (eData) {
-    // console.log('bind handler paged table:')
-    // console.log(eData)
+    // placeholder function
   }
 }
 

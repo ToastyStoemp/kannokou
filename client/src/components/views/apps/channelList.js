@@ -44,8 +44,7 @@ class ChannelList extends PagedTable {
   }
 
   handle (eData) {
-    // console.log('bind handler ChannelList:')
-    // console.log(eData)
+
   }
 }
 

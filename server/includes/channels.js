@@ -86,7 +86,7 @@ channels = {
 			avtr: "http://avatar.img/goes/here.jpgpnggif#lazy"
 		};
 
-		this.data[channel].users.push(newUser);
+		this.data[channel].users.push(Object.assign({}, newUser));
 		return newUser;
 	},
 

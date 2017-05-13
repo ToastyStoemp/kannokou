@@ -90,7 +90,7 @@ class Websocket {
     }
 
     this[protocol.JOIN] = function (data) {
-      // console.log('joined channel: ' + data.chan + ', nicknamed: ' + data.nick)
+
     }
   }
 
@@ -120,8 +120,7 @@ class Websocket {
       appData: { act: 'i' }
     }
     if (typeof appData.args !== 'undefined') request.appData = appData.args
-    // console.log(appData)
-    // console.log(request)
+
     this.send(request)
   }
 

@@ -134,13 +134,14 @@ class ChannelChat extends BaseContainer {
   }
 
   handle (eData) {
-    console.log(eData)
+    // console.log(eData)
     switch (eData.eType) {
       // ui events //
       case 'onShown' :
         this.visible = true
         this.setNotifCount(0)
         this.unseenMsgs = 0
+        this.refresh()
         break
       case 'onHidden' :
         this.visible = false

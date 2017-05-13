@@ -15,13 +15,11 @@ import MainMenuButton from '../views/core/mainMenuButton'
 
 import LoginContainer from '../views/core/loginContainer'
 
-import TableContainer from '../views/base/tableContainer'
 import PagedTable from '../views/base/pagedTable'
 import ChannelList from '../views/apps/channelList'
 import ChannelChat from '../views/apps/channelChat'
 
 const subUI = {
-  'TableContainer': TableContainer,
   'PagedTable': PagedTable,
   'ChannelList': ChannelList,
   'ChannelChat': ChannelChat
@@ -117,11 +115,10 @@ class UiEngine {
   }
 
   getTables () {
-    var rTable = new TableContainer()
     var pTable = new PagedTable()
     var cList = new ChannelList()
 
-    return rTable - pTable - cList
+    return pTable - cList
   }
 }
 
