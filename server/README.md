@@ -1,3 +1,7 @@
 usage:
-  npm install
-  node main.js
+
+
+  1: npm install
+
+
+  2: node main.js
