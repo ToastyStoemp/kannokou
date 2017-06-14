@@ -1,5 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const jQuery = require('jQuery');
+const jQuery = require('jquery');
 
 const path = require('path');
 
