@@ -8,7 +8,7 @@
 class BaseContainer {
   constructor () {
     this.dom = document.createElement('div')
-    this.structure = null
+    this.structure = {}
     this.built = false
     this.visible = false
 
@@ -48,6 +48,12 @@ class BaseContainer {
           }
         }
       }
+    }
+  }
+
+  clearDom () {
+    while (this.dom.firstChild) {
+      this.dom.removeChild(this.dom.firstChild)
     }
   }
 

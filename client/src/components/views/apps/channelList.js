@@ -43,8 +43,17 @@ class ChannelList extends PagedTable {
     this.changeTabLabel('Channel List')
   }
 
-  handle (eData) {
+  handle (eData, leftNav) {
+    switch (eData.eType) {
+      // ui events //
+      case 'onShown' :
+        this.updateLeftNav(leftNav)
+        break
+    }
+  }
 
+  updateLeftNav (leftNav) {
+    leftNav.updateStructure()
   }
 }
 

@@ -103,7 +103,7 @@ class UiEngine {
         this.appSpaces[evt.eventData.appEID].ui.afterBuild()
       }
     } else {
-      this.appSpaces[evt.eventData.appEID].ui.handle(evt.eventData)
+      this.appSpaces[evt.eventData.appEID].ui.handle(evt.eventData, this.leftNav)
     }
   }
 

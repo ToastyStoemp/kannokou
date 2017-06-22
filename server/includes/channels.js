@@ -83,7 +83,7 @@ channels = {
 			appEID: appEID,
 			nick: nick,
 			peer: true,
-			avtr: "http://avatar.img/goes/here.jpgpnggif#lazy"
+			avtr: "https://avatars0.githubusercontent.com/u/17520604?v=3&s=460#lazy" // to-do: make live avatars
 		};
 
 		this.data[channel].users.push(Object.assign({}, newUser));
