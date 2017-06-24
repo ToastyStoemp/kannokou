@@ -93,15 +93,16 @@ channels = {
 	removeUser: function (channel, id) {
 		if (typeof this.data[channel] === 'undefined') return;
 
-		var nick = 'newb';
+		var removedUser = null;
 		for(var i = 0; i < this.data[channel].userCount; i++) {
 			if (this.data[channel].users[i].id === id) {
-				nick = this.data[channel].users[i].nick;
-				this.data[channel].users.splice(i, 1);
+				removedUser = this.data[channel].users.splice(i, 1)[0];
 				this.data[channel].userCount--;
 				i--;
 			}
 		}
+
+		if (removedUser === null) return;
 
 		this.getChannelUsers(channel).forEach(function (user) {
 			if (user.id != id)
@@ -110,8 +111,8 @@ channels = {
 					appEID: user.appEID,
 					eType: 'l', // user left //
 					ad: {
-						nick: nick,
-						id: id
+						nick: removedUser.nick,
+						id: removedUser.id
 					}
 				}, user.id);
 		});

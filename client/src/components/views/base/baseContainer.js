@@ -171,6 +171,12 @@ class BaseContainer {
   getPreloader () {
     return this.getDomByStruct(this.preloaderStruct)
   }
+
+  emitEvent (eType, eData) {
+    var fwEvent = new global.Event(eType)
+    fwEvent.eventData = eData
+    document.dispatchEvent(fwEvent)
+  }
 }
 
 export default BaseContainer

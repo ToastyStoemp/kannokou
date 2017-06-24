@@ -39,8 +39,10 @@ class ChannelList extends PagedTable {
     }.bind(this))
   }
 
-  afterBuild () {
+  afterBuild (leftNav) {
     this.changeTabLabel('Channel List')
+
+    this.updateLeftNav(leftNav)
   }
 
   handle (eData, leftNav) {
@@ -53,7 +55,30 @@ class ChannelList extends PagedTable {
   }
 
   updateLeftNav (leftNav) {
-    leftNav.updateStructure()
+    var newStruct = {}
+    // var appendTarget = null
+
+    // add channel objects //
+    newStruct['div_chanFilter'] = {
+      _class: 'input-field',
+
+      i: {
+        _class: 'material-icons prefix',
+        _content: 'dns'
+      },
+
+      input: {
+        _id: 'mChanFilterInput',
+        _type: 'text'
+      },
+
+      label: {
+        _for: 'mChanFilterInput',
+        _content: 'Channel Filter'
+      }
+    }
+
+    leftNav.updateStructure('Channel List', newStruct)
   }
 }
 

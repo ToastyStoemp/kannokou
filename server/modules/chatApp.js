@@ -27,36 +27,69 @@ modules.application['chat'] = function (appData, eventID, socket) {
     case 'i' : // initialize
       reply.ui = 'ChannelChat';
 
-  		// add new user to channel & tell other users about new user //
-  		var userPacket = channels.addUser(
-        userId,
-        eventID,
-        userName,
-        appData.chan
-      );
+      var allowJoin = true;
 
-      if (userPacket === false) return; // to-do: direct reply error message #lazy
-
-      // push new channel to tracking //
-      socket.channels.push(appData.chan);
-
-      // inform channel group of new connection //
-  		userPacket.e = protocol.APPLICATION;
-  		userPacket.eType = 'j';
-      var channelUsers = [];
-  		channels.getChannelUsers(appData.chan).forEach(function (user) {
-  			if (user.id != userPacket.id) {
-          userPacket.appEID = user.appEID;
-          wsServer.buffer(userPacket, user.id);
-          channelUsers.push({ nick: user.nick, peer: user.peer, avtr: user.avtr });
+      // check for existing connection id
+      var chanUsers = channels.getChannelUsers(appData.chan);
+      chanUsers.forEach(function (user){
+        if (user.id === userId) {
+          allowJoin = false;
+          reply.ad = {
+      			err: 'You are already there'
+      		}
         }
-  		});
+      })
 
-      reply.ad = {
-  			nick: userName,
-  			chan: appData.chan,
-        peers: channelUsers
-  		}
+      // check for existing name
+      if (allowJoin) {
+        chanUsers.forEach(function (user){
+          if (user.nick === userName) {
+            allowJoin = false;
+            reply.ad = {
+        			err: 'Name taken! D:'
+        		}
+            reply.eType = 'err';
+          }
+        })
+      }
+
+      if (allowJoin) {
+        // add new user to channel & tell other users about new user //
+    		var userPacket = channels.addUser(
+          userId,
+          eventID,
+          userName,
+          appData.chan
+        );
+
+        if (userPacket === false){
+          reply.ad = {
+      			err: 'Unknown error - Failed to join channel'
+      		}
+          reply.eType = 'err';
+        }else{
+          // push new channel to tracking //
+          socket.channels.push(appData.chan);
+
+          // inform channel group of new connection //
+      		userPacket.e = protocol.APPLICATION;
+      		userPacket.eType = 'j';
+          var channelUsers = [];
+      		channels.getChannelUsers(appData.chan).forEach(function (user) {
+      			if (user.id != userPacket.id) {
+              userPacket.appEID = user.appEID;
+              wsServer.buffer(userPacket, user.id);
+              channelUsers.push({ nick: user.nick, peer: user.peer, avtr: user.avtr });
+            }
+      		});
+
+          reply.ad = {
+      			nick: userName,
+      			chan: appData.chan,
+            peers: channelUsers
+      		}
+        }
+      }
     break;
     case 'msg' :
       // check if this socket id is in channel
@@ -74,6 +107,9 @@ modules.application['chat'] = function (appData, eventID, socket) {
       });
 
       haltDirectResponse = true;
+    break;
+    case 'close' :
+      channels.removeUser(appData.chan, userId);
     break;
   }
 

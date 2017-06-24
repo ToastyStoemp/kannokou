@@ -100,9 +100,14 @@ class UiEngine {
       this.appSpaces[evt.eventData.appEID].parent.appendChild(this.appSpaces[evt.eventData.appEID].ui.build())
 
       if (typeof this.appSpaces[evt.eventData.appEID].ui.afterBuild === 'function') {
-        this.appSpaces[evt.eventData.appEID].ui.afterBuild()
+        this.appSpaces[evt.eventData.appEID].ui.afterBuild(this.leftNav)
       }
     } else {
+      if (typeof evt.eventData.close !== 'undefined' && evt.eventData.close === true) {
+        this.closeAppSpace(evt.eventData.appEID)
+        evt.eventData.eType = 'onClose'
+      }
+
       this.appSpaces[evt.eventData.appEID].ui.handle(evt.eventData, this.leftNav)
     }
   }
@@ -112,6 +117,20 @@ class UiEngine {
     this.appSpaces[spaceData.id] = {}
     this.appSpaces[spaceData.id].parent = spaceData.dom
     return spaceData.id
+  }
+
+  closeAppSpace (appEID) {
+    this.appSpaces[appEID].parent.parentNode.removeChild(this.appSpaces[appEID].parent)
+
+    // to-do: the following code should be updated to use references instead
+    var appLabel = document.getElementById(appEID + '_label').parentNode
+    var firstTabId = appLabel.parentNode.firstChild.lastChild.id.replace('_label', '')
+
+    setTimeout(function () {
+      global.$('ul.tabs').tabs('select_tab', firstTabId) // jquery sucks so bad
+    }, 1)
+
+    appLabel.parentNode.removeChild(appLabel)
   }
 
   getTables () {

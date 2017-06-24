@@ -27,7 +27,7 @@ class MainNav extends BaseContainer {
             _href: '#',
             _id: '',
             _class: 'brand-logo orange darken-4',
-            _style: 'padding-left: 7px; padding-right: 14px; min-width: 316px;',
+            _style: 'padding-left: 7px; padding-right: 14px; min-width: 300px;',
 
             i: {
               _class: 'material-icons',

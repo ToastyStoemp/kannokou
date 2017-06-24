@@ -13,6 +13,29 @@ class ChannelChat extends BaseContainer {
 
     this.appName = 'chat'
     this.appEID = parentDom.id
+
+    // check and report errors
+    this.hasError = false
+    if (typeof initialData.err !== 'undefined') {
+      this.hasError = true
+      this.chan = 'Error!'
+
+      // output error
+      global.Materialize.toast(initialData.err, 4000, 'orange darken-4')
+
+      // close tab
+      setTimeout(function () {
+        this.emitEvent('tabEvent', {
+          appEID: this.appEID,
+          ui: 'ChannelChat',
+          eType: 'close',
+          close: true
+        })
+      }.bind(this), 1)
+
+      return
+    }
+
     this.rows = 0
     this.peers = initialData.peers
     this.chan = initialData.chan
@@ -118,8 +141,10 @@ class ChannelChat extends BaseContainer {
     this.visible = true
   }
 
-  afterBuild () {
+  afterBuild (leftNav) {
     this.changeTabLabel(this.chan)
+
+    this.updateLeftNav(leftNav)
   }
 
   refresh () {
@@ -148,24 +173,46 @@ class ChannelChat extends BaseContainer {
       case 'onHidden' :
         this.visible = false
         break
+      case 'onClose' :
+        if (this.hasError) return
+
+        this.emitEvent('routeAppData', {
+          appName: this.appName,
+          id: this.appEID,
+          args: {
+            act: 'close',
+            chan: this.chan
+          }
+        })
+        break
       // channel events //
+      case 'err' : // error handler
+        console.log(eData)
+        break
       case 'm' : // channel message
         this.addRow(eData.ad.nick, true, 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460', eData.ad.msg)
         break
       case 'j' : // user joined
         this.addRow('Kannokou', true, 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460', eData.nick + ' joined')
-        this.peers.push({ nick: eData.nick, peer: true, avtr: 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460' })
+        this.peers.push({ nick: eData.nick, peer: true, id: eData.id, avtr: 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460' })
         this.updateLeftNav(leftNav)
         break
       case 'l' : // user left
         this.addRow('Kannokou', true, 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460', eData.ad.nick + ' left')
-        // to-do: remove user from this.peers here
+        for (var i = 0; i < this.peers.length; i++) {
+          if (this.peers[i].id === eData.ad.id) {
+            this.peers.splice(i, 1)
+          }
+        }
+
         this.updateLeftNav(leftNav)
         break
     }
   }
 
   updateLeftNav (leftNav) {
+    if (this.hasError) return
+
     var newStruct = {}
     var appendTarget = null
 
@@ -247,7 +294,7 @@ class ChannelChat extends BaseContainer {
       })
     }
 
-    leftNav.updateStructure(newStruct)
+    leftNav.updateStructure(this.chan, newStruct)
   }
 }
 

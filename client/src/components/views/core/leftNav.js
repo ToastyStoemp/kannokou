@@ -26,7 +26,9 @@ class LeftNav extends BaseContainer {
     this.structure = Object.assign({}, this.baseStructure)
   }
 
-  updateStructure (newStruct) {
+  updateStructure (title, newStruct) {
+    document.getElementById('currentChannel').innerHTML = title // to-do: update by reference instead of getElementById
+
     var rebuilt = JSON.parse(JSON.stringify(this.baseStructure)) // Object.assign() does not work here
     rebuilt.ul = Object.assign(rebuilt.ul, newStruct)
     this.structure = Object.assign({}, rebuilt)
