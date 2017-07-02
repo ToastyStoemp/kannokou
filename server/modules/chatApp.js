@@ -58,7 +58,7 @@ modules.application['chat'] = function (appData, eventID, socket) {
     		var userPacket = channels.addUser(
           userId,
           eventID,
-          userName,
+          userName.replace(/\</g,'&lt;'),
           appData.chan
         );
 
@@ -79,7 +79,7 @@ modules.application['chat'] = function (appData, eventID, socket) {
       			if (user.id != userPacket.id) {
               userPacket.appEID = user.appEID;
               wsServer.buffer(userPacket, user.id);
-              channelUsers.push({ nick: user.nick, peer: user.peer, avtr: user.avtr });
+              channelUsers.push({ nick: user.nick.replace(/\</g,'&lt;'), peer: user.peer, avtr: user.avtr });
             }
       		});
 
@@ -97,8 +97,8 @@ modules.application['chat'] = function (appData, eventID, socket) {
 
       reply.eType = 'm';
       reply.ad = {
-  			nick: userName,
-        msg: appData.msg
+  			nick: userName.replace(/\</g,'&lt;'),
+        msg: appData.msg.replace(/\</g,'&lt;')
   		}
 
       channels.getChannelUsers(appData.chan).forEach(function (user) {

@@ -5,15 +5,15 @@
 
 class WsConfig {
   constructor () {
-    this.port = 7676
+    // this.port = 7676
 
     this.wsPath = this.pathByDomain(window.location.hostname)
   }
 
   pathByDomain (domain) {
-    // return 'wss://' + domain + ':' + this.port
+    return 'wss://' + domain + '/chat-ws'
 
-    return 'ws://' + domain + ':' + this.port
+    // return 'ws://' + domain + ':' + this.port
   }
 }
 

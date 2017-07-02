@@ -190,15 +190,15 @@ class ChannelChat extends BaseContainer {
         console.log(eData)
         break
       case 'm' : // channel message
-        this.addRow(eData.ad.nick, true, 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460', eData.ad.msg)
+        this.addRow(eData.ad.nick.replace(/</g, '&lt;'), true, 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460', eData.ad.msg)
         break
       case 'j' : // user joined
         this.addRow('Kannokou', true, 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460', eData.nick + ' joined')
-        this.peers.push({ nick: eData.nick, peer: true, id: eData.id, avtr: 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460' })
+        this.peers.push({ nick: eData.nick.replace(/</g, '&lt;'), peer: true, id: eData.id, avtr: 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460' })
         this.updateLeftNav(leftNav)
         break
       case 'l' : // user left
-        this.addRow('Kannokou', true, 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460', eData.ad.nick + ' left')
+        this.addRow('Kannokou', true, 'https://avatars0.githubusercontent.com/u/17520604?v=3&s=460', eData.ad.nick.replace(/</g, '&lt;') + ' left')
         for (var i = 0; i < this.peers.length; i++) {
           if (this.peers[i].id === eData.ad.id) {
             this.peers.splice(i, 1)

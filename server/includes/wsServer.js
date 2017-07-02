@@ -38,6 +38,14 @@ wsServer = {
 	},
 
 	newConnection: function (socket) {
+		// setup error handling
+		socket._receiver.onerror = function(e){
+			socket._receiver.flush();
+			socket._receiver.messageBuffer = [];
+			socket._receiver.cleanup();
+			socket.close();
+		}
+
 		// initialize socket data
 		socket.channels = [];
 
@@ -77,7 +85,10 @@ wsServer = {
 	sendTo: function (socket, data) {
 		if (typeof socket === 'undefined') return; // zombie killer needed
 
-		if (socket.readyState == webSocket.OPEN) socket.send(JSON.stringify(data));
+		if (socket.readyState == webSocket.OPEN)
+			socket.send(JSON.stringify(data), function (err) {
+				if (typeof err !== 'undefined') console.log('Ws failed to send to target: ' + err)
+			});
 	},
 
 	getSocketById: function (targetId) {
